@@ -22,4 +22,5 @@ func createRouter() *gin.Engine {
 
 func handleRequests(router *gin.Engine) {
 	response.GetTodoList(router)
+	router.Run()
 }

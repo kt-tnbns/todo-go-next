@@ -11,5 +11,4 @@ func GetTodoList(router *gin.Engine) {
 	router.GET("/todo-list", func(c *gin.Context) {
 		c.JSON(200, todoList)
 	})
-	router.Run()
 }
