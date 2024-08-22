@@ -1,9 +1,9 @@
 import { TodoResponse } from "@/app/types/todoList";
 import { Checkbox, Stack, Typography } from "@mui/material";
 
-type TodoListFormProps = Omit<TodoResponse, "id">;
+type TodoListCardProps = Omit<TodoResponse, "id">;
 
-export const TodoListForm = (todo: TodoListFormProps) => {
+export const TodoListCard = (todo: TodoListCardProps) => {
   const { title, completed } = todo;
   return (
     <Stack

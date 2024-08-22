@@ -1,6 +1,6 @@
-import { Loading } from "@/app/components/Loading/Loading";
-import { TodoListForm } from "@/app/components/Todo/TodoListForm";
-import { useTodoListState } from "@/app/components/Todo/useTodoListState";
+import { Loading } from "@/app/components/loading/Loading";
+import { TodoListCard } from "@/app/components/molecules/TodoListCard";
+import { useTodoListState } from "@/app/components/organisms/todo/useTodoListState";
 import { Box } from "@mui/material";
 import React from "react";
 
@@ -21,7 +21,7 @@ export const TodoList = () => {
       }}
     >
       {todoList?.map(({ id, ...rest }) => (
-        <TodoListForm key={id} {...rest} />
+        <TodoListCard key={id} {...rest} />
       ))}
     </Box>
   );
