@@ -1,5 +1,4 @@
-import { TodoList } from "@/app/components/Todo/TodoList";
-
+import { TodoList } from "@/app/components/organisms/todo/TodoList";
 import { Box, Typography } from "@mui/material";
 import React from "react";
 

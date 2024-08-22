@@ -1,17 +1,27 @@
 package main
 
 import (
+	"todo-api/controller"
 	"todo-api/controller/response"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func main() {
-	app := fiber.New()
-	handleRequests(app)
+	collection, _ := controller.DBConnext()
+	app := createApp()
+	handleRequests(app, collection)
 }
 
-func handleRequests(app *fiber.App) {
-	response.GetTodoList(app)
+func createApp() *fiber.App {
+	app := fiber.New()
+	app.Use(cors.New())
+	return app
+}
+
+func handleRequests(app *fiber.App, collection *mongo.Collection) {
+	response.GetTodoList(app, collection)
 	app.Listen(":8080")
 }

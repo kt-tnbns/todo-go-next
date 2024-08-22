@@ -1,5 +1,5 @@
 import { Loading } from "@/app/components/loading/Loading";
-import { TodoListCard } from "@/app/components/molecules/TodoListCard";
+import { TodoListCard } from "@/app/components/molecules/todoListCard/TodoListCard";
 import { useTodoListState } from "@/app/components/organisms/todo/useTodoListState";
 import { Box } from "@mui/material";
 import React from "react";

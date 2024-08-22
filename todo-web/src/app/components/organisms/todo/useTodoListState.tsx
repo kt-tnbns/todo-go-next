@@ -1,10 +1,9 @@
-import { useGetAPI } from "@/app/hooks/useQuery";
+import { useGetTodoList } from "@/app/Api/todoApi";
 import { TodoResponse } from "@/app/types/todoList";
 
 export const useTodoListState = () => {
-  const { data: todoList, isLoading: isTodoListLoading } = useGetAPI<
-    TodoResponse[]
-  >("http://localhost:8080/todo-list");
+  const { data: todoList, isLoading: isTodoListLoading } =
+    useGetTodoList<TodoResponse[]>();
 
   return { todoList, isTodoListLoading };
 };
