@@ -4,11 +4,12 @@ import { Checkbox, Stack, Typography } from "@mui/material";
 
 type TodoListCardProps = {
   todo: TodoResponse;
+  refetchTodoList: () => void;
 };
 
-export const TodoListCard = ({ todo }: TodoListCardProps) => {
+export const TodoListCard = ({ todo, refetchTodoList }: TodoListCardProps) => {
   const { id, title, completed } = todo;
-  const { handleOnCheck } = useTodoListCardState();
+  const { handleOnCheck } = useTodoListCardState(refetchTodoList);
   return (
     <Stack
       direction="row"

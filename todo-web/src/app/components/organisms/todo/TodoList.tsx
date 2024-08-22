@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import React from "react";
 
 export const TodoList = () => {
-  const { todoList, isTodoListLoading } = useTodoListState();
+  const { todoList, isTodoListLoading, refetchTodoList } = useTodoListState();
   return isTodoListLoading ? (
     <Loading />
   ) : (
@@ -21,7 +21,11 @@ export const TodoList = () => {
       }}
     >
       {todoList?.map((todo) => (
-        <TodoListCard key={todo.id} todo={todo} />
+        <TodoListCard
+          key={todo.id}
+          todo={todo}
+          refetchTodoList={refetchTodoList}
+        />
       ))}
     </Box>
   );

@@ -1,6 +1,6 @@
-import { usePutTodoList } from "@/app/Api/todoApi";
+import { usePutTodoList } from "@/app/api/todoApi";
 
-export const useTodoListCardState = () => {
+export const useTodoListCardState = (refetchTodoList: () => void) => {
   const { mutate } = usePutTodoList();
 
   const handleOnCheck = (
@@ -9,7 +9,7 @@ export const useTodoListCardState = () => {
   ) => {
     const req = { id, completed: event.target.checked };
     mutate(req, {
-      onSuccess: () => {},
+      onSuccess: refetchTodoList,
       onError: () => {},
     });
   };

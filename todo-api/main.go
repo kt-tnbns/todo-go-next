@@ -23,5 +23,6 @@ func createApp() *fiber.App {
 
 func handleRequests(app *fiber.App, collection *mongo.Collection) {
 	response.GetTodoList(app, collection)
+	response.PutTodoList(app, collection)
 	app.Listen(":8080")
 }
