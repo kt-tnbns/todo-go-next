@@ -3,12 +3,12 @@ package response
 import (
 	"todo-api/controller/response/mock"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
-func GetTodoList(router *gin.Engine) {
+func GetTodoList(app *fiber.App) {
 	todoList := mock.ExampleTodoList
-	router.GET("/todo-list", func(c *gin.Context) {
-		c.JSON(200, todoList)
+	app.Get("/todo-list", func(c *fiber.Ctx) error {
+		return c.JSON(todoList)
 	})
 }

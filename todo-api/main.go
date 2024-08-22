@@ -3,24 +3,15 @@ package main
 import (
 	"todo-api/controller/response"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	router := createRouter()
-	handleRequests(router)
+	app := fiber.New()
+	handleRequests(app)
 }
 
-func createRouter() *gin.Engine {
-	router := gin.Default()
-	router.Use(func(c *gin.Context) {
-		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
-		c.Next()
-	})
-	return router
-}
-
-func handleRequests(router *gin.Engine) {
-	response.GetTodoList(router)
-	router.Run()
+func handleRequests(app *fiber.App) {
+	response.GetTodoList(app)
+	app.Listen(":8080")
 }
