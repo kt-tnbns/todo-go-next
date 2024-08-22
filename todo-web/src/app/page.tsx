@@ -1,6 +1,6 @@
 "use client";
 
-import { HomePage } from "@/app/components/homepage/HomePage";
+import { HomePage } from "@/app/pages/homepage/HomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 

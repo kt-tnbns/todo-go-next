@@ -1,5 +1,4 @@
 import { useGetTodoList } from "@/app/api/todoApi";
-import { TodoResponse } from "@/app/types/todoList";
 
 export const useTodoListState = () => {
   const {

@@ -32,6 +32,6 @@ func PutTodoList(app *fiber.App, collection *mongo.Collection) {
 			return c.Status(fiber.StatusNotFound).SendString("Todo List not found")
 		}
 
-		return c.SendString("Todo List updated successfully")
+		return c.Status(fiber.StatusOK).SendString("Todo List updated successfully")
 	})
 }
