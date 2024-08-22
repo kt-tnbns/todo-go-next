@@ -1,3 +1,4 @@
+import axios, { AxiosRequestConfig } from "axios";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 
 const useGetAPI = <T>(
@@ -7,63 +8,59 @@ const useGetAPI = <T>(
   return useQuery({
     queryKey: [queryKey || url],
     queryFn: async () => {
-      const response = await fetch(url);
-      if (!response.ok) {
+      const response = await axios.get<T>(url);
+      if (!response.data) {
         throw new Error("Network response was not ok");
       }
-      const data: T = await response.json();
-      return data;
+      return response.data;
     },
   });
 };
-const usePostAPI = <T>(url: string, config?: RequestInit) =>
-  useMutation<T, Error, RequestInit>({
-    mutationFn: async (requestInit: RequestInit = {}) => {
-      const response = await fetch(url, {
-        method: "POST",
-        ...config,
-        ...requestInit,
-      });
-      if (!response.ok) {
+const usePostAPI = <T, TBody = Record<string, any>>(
+  url: string,
+  config?: AxiosRequestConfig<TBody>
+) =>
+  useMutation<T, Error, TBody>({
+    mutationFn: async (body: TBody) => {
+      const response = await axios.post<T>(url, body, config);
+      if (!response.data) {
         throw new Error(
           `Network response was not ok. Status: ${response.status}`
         );
       }
-      return (await response.json()) as T;
+      return response.data;
     },
   });
 
-const usePutAPI = <T>(url: string, config?: RequestInit) =>
-  useMutation<T, Error, RequestInit>({
-    mutationFn: async (requestInit: RequestInit = {}) => {
-      const response = await fetch(url, {
-        method: "PUT",
-        ...config,
-        ...requestInit,
-      });
-      if (!response.ok) {
+const usePutAPI = <T, TBody = Record<string, any>>(
+  url: string,
+  config?: AxiosRequestConfig<TBody>
+) =>
+  useMutation<T, Error, TBody>({
+    mutationFn: async (body: TBody) => {
+      const response = await axios.put<T>(url, body, config);
+      if (!response.data) {
         throw new Error(
           `Network response was not ok. Status: ${response.status}`
         );
       }
-      return (await response.json()) as T;
+      return response.data;
     },
   });
 
-const useDeleteAPI = <T>(url: string, config?: RequestInit) =>
-  useMutation<T, Error, RequestInit>({
-    mutationFn: async (requestInit: RequestInit = {}) => {
-      const response = await fetch(url, {
-        method: "DELETE",
-        ...config,
-        ...requestInit,
-      });
-      if (!response.ok) {
+const useDeleteAPI = <T, TBody = Record<string, any>>(
+  url: string,
+  config?: AxiosRequestConfig<TBody>
+) =>
+  useMutation<T, Error, TBody>({
+    mutationFn: async (body: TBody) => {
+      const response = await axios.delete<T>(url, { data: body, ...config });
+      if (!response.data) {
         throw new Error(
           `Network response was not ok. Status: ${response.status}`
         );
       }
-      return (await response.json()) as T;
+      return response.data;
     },
   });
 

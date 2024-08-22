@@ -3,3 +3,8 @@ export type TodoResponse = {
   title: string;
   completed: boolean;
 };
+
+export type UpdateTodoCompletedRequest = {
+  id: number;
+  completed: boolean;
+};

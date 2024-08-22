@@ -20,8 +20,8 @@ export const TodoList = () => {
         backgroundColor: "background.paper",
       }}
     >
-      {todoList?.map(({ id, ...rest }) => (
-        <TodoListCard key={id} {...rest} />
+      {todoList?.map((todo) => (
+        <TodoListCard key={todo.id} todo={todo} />
       ))}
     </Box>
   );

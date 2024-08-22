@@ -2,10 +2,12 @@ import { useTodoListCardState } from "@/app/components/molecules/todoListCard/us
 import { TodoResponse } from "@/app/types/todoList";
 import { Checkbox, Stack, Typography } from "@mui/material";
 
-type TodoListCardProps = Omit<TodoResponse, "id">;
+type TodoListCardProps = {
+  todo: TodoResponse;
+};
 
-export const TodoListCard = (todo: TodoListCardProps) => {
-  const { title, completed } = todo;
+export const TodoListCard = ({ todo }: TodoListCardProps) => {
+  const { id, title, completed } = todo;
   const { handleOnCheck } = useTodoListCardState();
   return (
     <Stack
@@ -14,7 +16,7 @@ export const TodoListCard = (todo: TodoListCardProps) => {
       sx={{ boxShadow: 2, padding: 2, borderRadius: 2 }}
       gap={2}
     >
-      <Checkbox checked={completed} onChange={handleOnCheck} />
+      <Checkbox checked={completed} onChange={(e) => handleOnCheck(e, id)} />
       <Typography
         sx={{
           textDecoration: completed ? "line-through" : "none",
