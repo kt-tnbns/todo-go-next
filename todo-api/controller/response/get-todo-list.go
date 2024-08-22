@@ -1,12 +1,15 @@
 package response
 
 import (
-	"net/http"
 	"todo-api/controller/response/mock"
-	"todo-api/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
-func GetTodoList(w http.ResponseWriter, r *http.Request) {
+func GetTodoList(router *gin.Engine) {
 	todoList := mock.ExampleTodoList
-	utils.EncodeToJSON(w, r, todoList)
+	router.GET("/todo-list", func(c *gin.Context) {
+		c.JSON(200, todoList)
+	})
+	router.Run()
 }

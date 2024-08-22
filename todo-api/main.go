@@ -1,21 +1,25 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"todo-api/controller/response"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	handleRequests()
+	router := createRouter()
+	handleRequests(router)
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "todo-api")
+func createRouter() *gin.Engine {
+	router := gin.Default()
+	router.Use(func(c *gin.Context) {
+		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
+		c.Next()
+	})
+	return router
 }
 
-func handleRequests() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/todo-list", response.GetTodoList)
-	http.ListenAndServe(":8080", nil)
+func handleRequests(router *gin.Engine) {
+	response.GetTodoList(router)
 }
