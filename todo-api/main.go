@@ -2,6 +2,7 @@ package main
 
 import (
 	"todo-api/controller"
+	"todo-api/controller/request"
 	"todo-api/controller/response"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,6 +24,7 @@ func createApp() *fiber.App {
 
 func handleRequests(app *fiber.App, collection *mongo.Collection) {
 	response.GetTodoList(app, collection)
-	response.PutTodoList(app, collection)
+	request.PutTodoList(app, collection)
+	request.PutTodoListStatus(app, collection)
 	app.Listen(":8080")
 }

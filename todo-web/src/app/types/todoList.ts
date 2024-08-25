@@ -4,7 +4,12 @@ export type TodoResponse = {
   completed: boolean;
 };
 
-export type UpdateTodoCompletedRequest = {
+export type UpdateTodoStatusRequest = {
   id: number;
   completed: boolean;
+};
+
+export type UpdateTitleTodoRequest = {
+  id: number;
+  title: string;
 };

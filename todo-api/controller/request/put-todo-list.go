@@ -1,4 +1,4 @@
-package response
+package request
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 
 func PutTodoList(app *fiber.App, collection *mongo.Collection) {
 	app.Put("/todo-list", func(c *fiber.Ctx) error {
-		var update models.UpdateCompleted
+		var update models.UpdateTitleTodoList
 		if err := c.BodyParser(&update); err != nil {
 			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 		}
@@ -19,7 +19,7 @@ func PutTodoList(app *fiber.App, collection *mongo.Collection) {
 		filter := bson.D{{Key: "id", Value: update.ID}}
 		updateCompleted := bson.D{
 			{Key: "$set", Value: bson.D{
-				{Key: "completed", Value: update.Completed},
+				{Key: "title", Value: update.Title},
 			}},
 		}
 

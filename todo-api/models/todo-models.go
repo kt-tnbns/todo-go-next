@@ -6,7 +6,12 @@ type TodoList struct {
 	Completed bool   `json:"completed"`
 }
 
-type UpdateCompleted struct {
+type UpdateStatus struct {
 	ID        int  `json:"id"`
 	Completed bool `json:"completed"`
+}
+
+type UpdateTitleTodoList struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
 }
