@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { Fragment, useMemo } from "react";
 
 type TodoListCardProps = {
   todo: TodoResponse;
@@ -16,15 +17,63 @@ type TodoListCardProps = {
 };
 
 export const TodoListCard = ({ todo, refetchTodoList }: TodoListCardProps) => {
-  const { id, title, completed } = todo;
+  const { title, completed } = todo;
   const {
+    mode,
     handleOnCheck,
     handleOnEdit,
     handleOnCancel,
-    isViewMode,
     handleTitleChange,
     handleOnUpdate,
-  } = useTodoListCardState(refetchTodoList, title);
+    handleOnDelete,
+    handleOnConfirmDelete,
+  } = useTodoListCardState(refetchTodoList, todo);
+
+  const EditButtonGroup = () => (
+    <Fragment>
+      <Button variant="outlined" onClick={handleOnCancel}>
+        Cancel
+      </Button>
+      <Button variant="contained" onClick={handleOnUpdate}>
+        Update
+      </Button>
+    </Fragment>
+  );
+
+  const DeleteButtonGroup = () => (
+    <Fragment>
+      <Button variant="outlined" onClick={handleOnCancel}>
+        Cancel
+      </Button>
+      <Button variant="contained" onClick={handleOnConfirmDelete}>
+        Confirm
+      </Button>
+    </Fragment>
+  );
+
+  const ViewButtonGroup = () => (
+    <Fragment>
+      <Button variant="outlined" onClick={handleOnEdit}>
+        Edit
+      </Button>
+      <Button variant="contained" color="error" onClick={handleOnDelete}>
+        Delete
+      </Button>
+    </Fragment>
+  );
+
+  const renderManageButtonGroup = useMemo(() => {
+    switch (mode) {
+      case TodoMode.VIEW:
+        return <ViewButtonGroup />;
+      case TodoMode.EDIT:
+        return <EditButtonGroup />;
+      default:
+        return <DeleteButtonGroup />;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
   return (
     <Box
       display="flex"
@@ -35,38 +84,24 @@ export const TodoListCard = ({ todo, refetchTodoList }: TodoListCardProps) => {
       gap={2}
     >
       <Stack direction="row" alignItems="center">
-        <Checkbox checked={completed} onChange={(e) => handleOnCheck(e, id)} />
-        {isViewMode ? (
-          <Typography
-            sx={{
-              textDecoration: completed ? "line-through" : "none",
-            }}
-          >
-            {title}
-          </Typography>
-        ) : (
+        {mode === TodoMode.EDIT ? (
           <TextField defaultValue={title} onChange={handleTitleChange} />
+        ) : (
+          <Fragment>
+            <Checkbox checked={completed} onChange={(e) => handleOnCheck(e)} />
+            <Typography
+              sx={{
+                textDecoration: completed ? "line-through" : "none",
+              }}
+            >
+              {title}
+            </Typography>
+          </Fragment>
         )}
       </Stack>
-      {isViewMode ? (
-        <Box display="flex" gap={2}>
-          <Button variant="outlined" onClick={handleOnEdit}>
-            Edit
-          </Button>
-          <Button variant="contained" color="error">
-            Delete
-          </Button>
-        </Box>
-      ) : (
-        <Box display="flex" gap={2}>
-          <Button variant="outlined" onClick={handleOnCancel}>
-            Cancel
-          </Button>
-          <Button variant="contained" onClick={() => handleOnUpdate(id)}>
-            Update
-          </Button>
-        </Box>
-      )}
+      <Box display="flex" gap={2}>
+        {renderManageButtonGroup}
+      </Box>
     </Box>
   );
 };

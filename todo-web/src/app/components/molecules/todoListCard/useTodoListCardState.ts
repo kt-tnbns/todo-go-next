@@ -1,13 +1,21 @@
-import { usePutTodoList, usePutTodoListStatus } from "@/app/api/todoApi";
+import {
+  useDeleteTodoList,
+  usePutTodoList,
+  usePutTodoListStatus,
+} from "@/app/api/todoApi";
 import { TodoMode } from "@/app/enum/todo";
+import { TodoResponse } from "@/app/types/todoList";
 import { useState } from "react";
 
 export const useTodoListCardState = (
   refetchTodoList: () => void,
-  initialTitle: string
+  todo: TodoResponse
 ) => {
-  const { mutateAsync: updateTodoList } = usePutTodoList();
-  const { mutateAsync: updateTodoListStatus } = usePutTodoListStatus();
+  const { id, title: initialTitle, completed } = todo;
+
+  const { mutateAsync: updateTodoList } = usePutTodoList(id);
+  const { mutateAsync: updateTodoListStatus } = usePutTodoListStatus(id);
+  const { mutateAsync: deleteTodoList } = useDeleteTodoList(id);
 
   const [mode, setMode] = useState<TodoMode>(TodoMode.VIEW);
   const [title, setTitle] = useState(initialTitle);
@@ -27,8 +35,8 @@ export const useTodoListCardState = (
     setTitle(initialTitle);
   };
 
-  const handleOnUpdate = (id: number) => {
-    const req = { id, title };
+  const handleOnUpdate = () => {
+    const req = { title };
     updateTodoList(req, {
       onSuccess: () => {
         refetchTodoList();
@@ -37,24 +45,37 @@ export const useTodoListCardState = (
     });
   };
 
-  const handleOnCheck = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const req = { id, completed: event.target.checked };
+  const handleOnCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const req = { completed: event.target.checked };
     updateTodoListStatus(req, {
       onSuccess: refetchTodoList,
       onError: () => {},
     });
   };
 
+  const handleOnConfirmDelete = () => {
+    deleteTodoList(
+      {},
+      {
+        onSuccess: refetchTodoList,
+      }
+    );
+  };
+
+  const handleOnDelete = () => {
+    setMode(TodoMode.DELETE);
+  };
+
   return {
-    handleOnCheck,
     isViewMode,
+    mode,
+    title,
+    handleOnCheck,
     handleOnEdit,
     handleOnCancel,
     handleOnUpdate,
-    title,
+    handleOnDelete,
+    handleOnConfirmDelete,
     handleTitleChange,
   };
 };

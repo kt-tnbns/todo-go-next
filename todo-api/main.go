@@ -26,5 +26,7 @@ func handleRequests(app *fiber.App, collection *mongo.Collection) {
 	response.GetTodoList(app, collection)
 	request.PutTodoList(app, collection)
 	request.PutTodoListStatus(app, collection)
+	request.DeleteTodoList(app, collection)
+	request.PostTodoList(app, collection)
 	app.Listen(":8080")
 }

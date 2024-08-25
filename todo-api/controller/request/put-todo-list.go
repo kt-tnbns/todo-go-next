@@ -10,13 +10,19 @@ import (
 )
 
 func PutTodoList(app *fiber.App, collection *mongo.Collection) {
-	app.Put("/todo-list", func(c *fiber.Ctx) error {
+	app.Put("/todo-list/:id", func(c *fiber.Ctx) error {
+		id, err := c.ParamsInt("id")
+
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		}
+
 		var update models.UpdateTitleTodoList
 		if err := c.BodyParser(&update); err != nil {
 			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 		}
 
-		filter := bson.D{{Key: "id", Value: update.ID}}
+		filter := bson.D{{Key: "id", Value: id}}
 		updateCompleted := bson.D{
 			{Key: "$set", Value: bson.D{
 				{Key: "title", Value: update.Title},
